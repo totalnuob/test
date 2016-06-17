@@ -1,0 +1,491 @@
+@(course: model.CourseInfo, relatedCourses: List[model.CourseInfo], user: model.User)
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>CourseTeach.me </title>
+        <meta name="description" content="CourseTeach.me">
+        <link rel="stylesheet" href="@routes.Assets.versioned("lib/font-awesome-4.2.0/css/font-awesome.min.css")"/>
+
+            <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+            <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    </head>
+
+    <style>
+    body{
+        padding-top: 40px;
+    }
+    .row-border{
+        border-bottom: 1px solid #eee;
+    }
+
+    .centered{
+        margin: 5px auto;
+        float: none;
+        width: 55%;
+        font-size: 17px;
+        height: 40px;
+    }
+
+    .navbar-right~.navbar-right {
+        margin-right: 0px;
+    }
+
+    .sidebar-module {
+        border: 1px solid #e9e9e9;
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .course-details-inner{
+        padding: 14px 21px 30px 21px;
+    }
+
+    .sidebar-inner{
+        padding: 12px 0;
+    }
+
+    .course-data-main-wrap {
+        padding-right: 30px;
+    }
+
+    .col-lg-9 {
+        width: 75%;
+    }
+
+    .col-lg-3 {
+        width: 25%;
+    }
+
+    .course-data-main .border-radius{
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    .course-info {
+        margin: 0;
+        padding-left: 20px;
+        padding-right: 50px;
+        overflow: hidden;
+        border: 1px solid #e9e9e9;
+        position: relative;
+    }
+
+    .course-block .course-title {
+        display: block;
+        font-size: 30px;
+        font-weight: 400;
+        color: #0662a1;
+        padding-left: 45px;
+        margin-top: 45px;
+        margin-bottom: 10px;
+    }
+
+    .course-provider-wrap {
+        position: relative;
+        overflow: hidden;
+        font-size: 13px;
+        font-family: "myriad-pro", Helvetica, Arial, sans-serif;
+        color: #5f4766;
+        padding-left: 45px;
+        margin-bottom: 30px;
+    }
+
+
+    .course-block .course-description {
+        font-size: 18px;
+        margin-bottom: 70px;
+        padding-left: 45px;
+        color: #272c2e;
+        line-height: 1.7;
+        font-family: "myriad-pro", Helvetica, Arial, sans-serif;
+    }
+
+    .course-tags {
+        border: 1px solid #e9e9e9;
+        border-radius: 3px;
+        background-color: #fff;
+        overflow: hidden;
+    }
+
+    .course-tags-inner {
+        padding: 14px 21px 30px 21px;
+    }
+
+    .course-tags .course-tags-row {
+        position: relative;
+        overflow: hidden;
+        color: #272c2e;
+        font-family: "myriad-pro", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        padding: 12px 0;
+    }
+
+    .course-tags .course-tags-row .course-tag-value {
+        display: block;
+        line-height: 1.2;
+        margin-left: 90px;
+        color: #272c2e;
+        overflow: hidden;
+        font-weight: 700;
+
+    }
+
+    .course-tags .course-tags-row .course-tag-icon {
+        display: block;
+
+        text-shadow: none;
+        background-color: transparent;
+        border: 0;
+        float: left;
+        width: 33px;
+    }
+
+    .btn-go-to-course {
+        display: block;
+        border: 0;
+        box-shadow: none;
+        text-decoration: none;
+        color: #fff;
+        background-color: #3eb6d6;
+        text-transform: uppercase;
+        font-size: 17px;
+        text-align: center;
+        padding: 26px 15px;
+        letter-spacing: 1px;
+        line-height: 1;
+        border-radius: 4px;
+        font-weight: 500;
+    }
+
+    #session-options {
+        border: 0;
+        width: 100%;
+        background: transparent;
+        font-weight: 400;
+    }
+
+    .course-tags-row .add-to-my-courses {
+        padding: 0;
+    }
+
+    .add-to-my-courses {
+        border-bottom: none;
+        background: #738b92;
+        border-top: 4px solid #3b2b44;
+        padding: 0;
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: 17px;
+        letter-spacing: 1px;
+        text-decoration: none;
+        display: block;
+        border: 0;
+    }
+
+    .course-tags-row .dropdown {
+        display: block;
+    }
+
+    .course-tags .course-tags-row {
+        position: relative;
+        overflow: hidden;
+        color: #272c2e;
+        font-family: "myriad-pro", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        padding: 12px 0;
+    }
+
+    .course-tags-row .dropdown-toggle {
+        display: block;
+        font-size: 15px;
+        line-height: 1;
+        padding: 19px 16px 24px 28px;
+        color: #fff;
+        font-weight: 500;
+    }
+
+    #course-interest-checkbox {
+        color: #6d6d6d;
+        margin-right: 10px;
+        font-size: 20px;
+        font-weight: 400;
+    }
+
+    .course-tags-row .dropdown-menu {
+        margin: 0;
+        border: 0;
+        padding: 0 27px 26px 30px;
+        background: #738b92;
+    }
+
+    .course-tags-row .dropdown-menu {
+        position: relative;
+        width: 100%;
+        box-shadow: none;
+    }
+
+    .course-data-row .dropdown-menu input[type="checkbox"] {
+        display: none;
+    }
+
+    input[type="radio"], input[type="checkbox"] {
+        margin: 4px 0 0;
+        margin-top: 1px;
+        line-height: normal;
+    }
+
+    .course-tags-row .dropdown-menu label {
+        cursor: pointer;
+        position: relative;
+        padding-left: 30px;
+        font-weight: 400;
+        margin-bottom: 9px;
+        color: #fff;
+    }
+
+
+    .soc_buttons > a{
+        font-size: 25px;
+    }
+
+    </style>
+
+
+    <body data-spy="scroll" data-target="#my-navbar">
+
+            <!-- Navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" id="my-navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <a href="/#" class="navbar-brand">CourseTeach.me</a>
+
+
+                </div> <!-- Navbar Header END-->
+                <div class="collapse navbar-collapse" id="navbar-collapse">
+                    @if(user == null) {
+                        <a href="/register" class="btn btn-warning navbar-btn navbar-right">Register</a>
+                        <div class="form-inline navbar-form navbar-right">
+                        @helper.form(routes.HomeController.authenticate) {
+                            <input type="email" class="form-control" name="email" placeholder="Username">
+                            <input type="password" class="form-control" name="password" placeholder="Password">
+                            <button type="submit" class="btn btn-default">Login</button>
+                        }
+                        </div>
+                    } else {
+                        <a href="/logout" class="btn btn-default navbar-btn navbar-right">Welcome, @user.firstName</a>
+                    }
+
+                    <ul class="nav navbar-nav">
+                        <li><a href="/#courses">Courses</a></li>
+                        @*<li><a href="/#feedback">Feedback</a></li>*@
+                        <li><a href="/#team">Our Team</a></li>
+                    </ul>
+                </div>
+            </div> <!-- Container END-->
+        </nav> <!-- Navbar END-->
+
+        <!-- jumbotron-->
+        <div class="jumbotron">
+            <div class="container text-center">
+                <h1>CourseTeach.me</h1>
+                <form action="/search" method="get" class="form-search">
+                    <input type="text" name="query" class="form-control centered" placeholder="find courses of your dream..." value=""/>
+                    <div class="btn-group">
+                        @*<a href="#search" class="btn btn-lg btn-info">Search</a>*@
+                        <input type="submit" value="Submit" class="btn btn-lg btn-info">
+                    </div>
+                </form>
+            </div> <!--Container END-->
+        </div> <!--jumbotron END-->
+
+
+        <div class="container">
+
+            <div class="course-data-main-wrap col-sm-8 col-lg-9">
+                <div class="course-data-main border-radius">
+                    <div class="course-image">
+                        <img src="@course.logoUrl" class="img-responsive" alt="cs50">
+                    </div>
+                    <div class="course-info">
+                        <h1 class="course-title">@course.name</h1>
+                        <div class="course-description">
+                            <strong>Description</strong>
+                            <p>@Html(course.description)</p>
+                        </div>
+                    </div>
+
+                    <div class="related-courses">
+                        <br>
+                        <h1>Related Courses</h1>
+                        @if(relatedCourses.size == 0) {
+                            <p>There are no related courses now, come back later</p>
+                        }
+                        @for(index <- 0 until relatedCourses.size) {
+                            <div class="row row-border">
+                                <div class="col-lg-4">
+                                    <img src="@relatedCourses(index).logoUrl" class="img-responsive" alt="cs50">
+                                </div>
+                                <div class="col-lg-8">
+                                    <a href="/course/@relatedCourses(index).id" target="_blank"><h3>@relatedCourses(index).name</h3></a>
+                                    <h4>Description</h4>
+                                    <p>@relatedCourses(index).description</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="course-data-sidebar col-sm-4 col-lg-3">
+                <div class="course-tags">
+                    <div class="course-tags-inner">
+                        <div class="course-tags-row course-platform">
+                            <span class="course-tag-icon">Platform</span>
+                            <span class="course-tag-value">@course.coursePlatform</span>
+                        </div>
+                        <div class="course-tags-row course-load">
+                            <span class="course-tag-icon">Load</span>
+                            <span class="course-tag-value">@course.workload</span>
+                        </div>
+                        <div class="course-tags-row course-languages">
+                            <span class="course-tag-icon">Language</span>
+                            @for(index <- 0 until course.primaryLanguages.size) {
+                                <p class="course-tag-value">@course.primaryLanguages(index)</p>
+                            }
+                        </div>
+                        <div class="course-tags-row course-instructor">
+                            <span class="course-tag-icon">Instructors</span>
+                            @for(index <- 0 until course.instructors.size) {
+                                <p class="course-tag-value">@course.instructors(index)</p>
+                            }
+                        </div>
+                        <div class="course-tags-row course-category">
+                            <span class="course-tag-icon">Category</span>
+                            @for(index <- 0 until course.categories.size) {
+                                <p class="course-tag-value">@course.categories(index)</p>
+                            }
+                        </div>
+                        <div class="course-tags-button">
+                            <a id="btnCourseProviderPage" class="btn-go-to-course" href="@course.url" target="_blank">Go to Course</a>
+                        </div>
+                    </div>
+                    @*<div class="course-tags-row add-to-my-courses">*@
+                        @*<span class="dropdown">*@
+                            @*<a class="add-button dropdown-toggle" href="#" data-toggle="dropdown">*@
+                                @*<span id="course-interest-checkbox">+</span>*@
+                                @*Add to my Courses*@
+                            @*</a>*@
+                            @*<ul class="dropdown-menu">*@
+                                @*<li>*@
+                                    @*@if(user != null && user.interestedCourses.contains(course.id)) {*@
+                                        @*<input id="check1" class="course-list-checkbox" name="course-interest-checkbox" value="1" type="checkbox" checked>*@
+                                    @*} else {*@
+                                        @*<input id="check1" class="course-list-checkbox" name="course-interest-checkbox" value="1" type="checkbox">*@
+                                    @*}*@
+                                    @*<label for="check1">Interested</label>*@
+                                @*</li>*@
+                                @*<li>*@
+                                    @*@if(user != null && user.enrolledCourses.contains(course.id)) {*@
+                                        @*<input id="check2" class="course-list-checkbox" name="course-interest-checkbox" value="2" type="checkbox" checked>*@
+                                    @*} else {*@
+                                        @*<input id="check2" class="course-list-checkbox" name="course-interest-checkbox" value="2" type="checkbox">*@
+                                    @*}*@
+                                    @*<label for="check1">Enrolled</label>*@
+                                @*</li>*@
+                                @*<li>*@
+                                    @*@if(user != null && user.enrolledCourses.contains(course.id)) {*@
+                                        @*<input id="check2" class="course-list-checkbox" name="course-interest-checkbox" value="3" type="checkbox" checked>*@
+                                    @*} else {*@
+                                        @*<input id="check2" class="course-list-checkbox" name="course-interest-checkbox" value="3" type="checkbox">*@
+                                    @*}*@
+                                    @*<label for="check1">Completed</label>*@
+                                @*</li>*@
+                            @*</ul>*@
+                        @*</span>*@
+                    @*</div>*@
+                </div>
+            </div>
+
+        </div>
+
+
+        <footer>
+            <div class="container">
+
+                <div class="container text-center">
+                    Contact us:
+                    <div class="soc_buttons margin-top-10">
+                        <a href="https://new.vk.com/courseteach_me" target="_blank">
+                            <i class="fa fa-vk"></i>
+                        </a>
+                        <a href="https://www.facebook.com/courseteach.me/" target="_blank">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                        <a href="mailto:courseteachme@@gmail.com">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                    <p>CourseTeach.Me &copy; Copyright 2016</p>
+                        <!-- Yandex.Metrika informer -->
+                    <a href="https://metrika.yandex.ru/stat/?id=36296295&amp;from=informer"
+                    target="_blank" rel="nofollow"><img src="https://informer.yandex.ru/informer/36296295/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+                    style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" onclick="try{Ya.Metrika.informer({i:this,id:36296295,lang:'ru'});return false}catch(e){}" /></a>
+                        <!-- /Yandex.Metrika informer -->
+                </div> <!--container END-->
+            </div>
+
+
+
+        </footer>
+
+
+        <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+            <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+            <!-- Yandex.Metrika counter -->
+        <script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter36296295 = new Ya.Metrika({
+                    id:36296295,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+        <noscript><div><img src="https://mc.yandex.ru/watch/36296295" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+            <!-- /Yandex.Metrika counter -->
+    </body>
+</html>
